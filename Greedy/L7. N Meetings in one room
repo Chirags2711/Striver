@@ -1,0 +1,61 @@
+646. Maximum Length of Pair Chain
+
+class Solution {
+    public int findLongestChain(int[][] pairs) {
+        Arrays.sort(pairs, new Comparator<int[]>(){
+            public int compare(int[] p1, int p2[]){
+                return Integer.compare(p1[1], p2[1]);
+            }
+        });
+        int count = 0;
+        int filled = Integer.MIN_VALUE;
+        for(int[] p: pairs){
+            int st = p[0];
+            int finish = p[1];
+            if(st > filled){
+                filled = finish;
+                count++;
+            }
+        }
+        return count;
+    }
+}
+
+
+// N meetings in one room
+class Meeting{
+    int start, end;
+    public Meeting(int s, int e){
+        start = s;
+        end = e;
+    }
+}
+
+class Solution 
+{
+    //Function to find the maximum number of meetings that can
+    //be performed in a meeting room.
+    public static int maxMeetings(int start[], int end[], int n)
+    {
+        Meeting[] meetings = new Meeting[n];
+        for(int i=0; i<n; i++){
+            meetings[i] = new Meeting(start[i], end[i]);
+        }
+        Arrays.sort(meetings, new Comparator<Meeting>(){
+            public int compare(Meeting m1, Meeting m2){
+                return Integer.compare(m1.end, m2.end);
+            }
+        });
+        int count = 0;
+        int finishTime = -1;
+        for(Meeting m: meetings){
+            int st = m.start;
+            int finish = m.end;
+            if(st > finishTime){
+                finishTime = finish;
+                count++;
+            }
+        }
+        return count;
+    }
+}
