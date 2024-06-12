@@ -1,0 +1,28 @@
+class Solution {
+    public int divide(int dividend, int divisor) {
+        if(dividend==Integer.MIN_VALUE && divisor==-1) return Integer.MAX_VALUE;
+        if(dividend == divisor) return 1;
+        boolean positive = true;
+        if((dividend > 0 && divisor < 0) || (dividend < 0 && divisor > 0)){
+            positive = false;
+        }
+        long n = Math.abs((long)dividend);
+        long d = Math.abs((long)divisor);
+        long ans = 0;
+        while(n >= d){
+            long counter = 0;
+            while(n >= (d<<(counter+1))){ // d * Math.pow(2, counter+1))
+                counter++;
+            }
+            ans += (1<<counter);
+            n   -= (d<<counter);
+        }
+        if(ans >= Integer.MAX_VALUE && positive){
+            return Integer.MAX_VALUE;
+        }
+        if(ans <= Integer.MIN_VALUE && !positive){
+            return Integer.MIN_VALUE;
+        }
+        return positive ? (int)ans : -(int)ans;
+    }
+}

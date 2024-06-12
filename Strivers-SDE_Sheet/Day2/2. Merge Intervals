@@ -1,0 +1,62 @@
+// Mine
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        int n = intervals.length;
+        ArrayList<int[]> ansList = new ArrayList<>();
+
+        Arrays.sort(intervals, (a, b) -> a[0]-b[0]);
+
+        int arr[] = new int[2];
+        arr[0] = intervals[0][0];
+        arr[1] = intervals[0][1];
+        ansList.add(arr);
+
+        for(int i=1; i<n; i++){
+            int currLo = intervals[i][0];
+            int currHi = intervals[i][1];
+
+            int[] prevInterval = ansList.get(ansList.size()-1);
+            if(currLo <= prevInterval[1]){
+                prevInterval[1] = Math.max(prevInterval[1], currHi);
+            }else{
+                int arr2[] = new int[2];
+                arr2[0] = currLo;
+                arr2[1] = currHi;
+                ansList.add(arr2);
+            }
+        }
+
+        int ansArray[][] = new int[ansList.size()][];
+        for(int i = 0; i < ansArray.length; i++){
+            ansArray[i] = ansList.get(i);
+        }
+
+        return ansArray;
+    }
+}
+
+// Strivers
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        if(intervals.length<=1){
+            return intervals;
+        }
+        
+        Arrays.sort(intervals, (i1,i2)-> Integer.compare(i1[0], i2[0]));
+
+        ArrayList<int[]> result=new ArrayList<>();
+        int []newInterval=intervals[0];
+        result.add(newInterval);
+
+        for(int[] interval: intervals){
+            if(interval[0]<=newInterval[1]){
+                newInterval[1]=Math.max(newInterval[1], interval[1]);
+            }else{
+                newInterval=interval;
+                result.add(newInterval);
+            }
+        }
+        
+        return result.toArray(new int[result.size()][]);
+    }
+}

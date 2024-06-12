@@ -1,0 +1,48 @@
+// 90 degrees, see Leetcode
+// In Place
+
+class Solution {
+    public void rotate(int[][] matrix) {
+        int n = matrix.length; // n*n matrix
+        for(int col=0; col<n; col++){
+            // reversing whole column
+            int start = 0;
+            int end = n-1;
+            while(start<end){
+                // swap
+                int t = matrix[start][col];
+                matrix[start][col] = matrix[end][col];
+                matrix[end][col] = t;
+                start++;
+                end--;
+            }
+        }
+        // swap opposite. Half matrix taken, as need to be done once only.
+        for(int row = 0; row < n; row++){
+            for(int col = row; col < n; col++){
+                // swap matrix[row][col], matrix[col][row]
+                int t = matrix[row][col];
+                matrix[row][col] = matrix[col][row];
+                matrix[col][row] = t;
+            }
+        }
+    }
+}
+
+// Using answer matrix
+class Solution {
+    public void rotate(int[][] matrix) {
+        int n=matrix.length;
+        int ans[][]=new int[n][n];
+        for(int row=0; row<n; row++){
+            for(int col=0; col<n; col++){
+                ans[col][n-row-1]=matrix[row][col];
+            }
+        }
+        for(int row=0; row<n; row++){
+            for(int col=0; col<n; col++){
+                matrix[row][col]=ans[row][col];
+            }
+        }
+    }
+}

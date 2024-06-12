@@ -1,0 +1,139 @@
+// Filling in reverse, best approach, Neetcode.
+
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int end1 = m-1;
+        int end2 = n-1;
+        int fill = m+n-1;
+        while(end1>=0 && end2>=0){
+            if(nums1[end1]>=nums2[end2]){
+                nums1[fill] = nums1[end1];
+                end1--;
+            }else{
+                nums1[fill] = nums2[end2];
+                end2--;
+            }
+            fill--;
+        }
+        while(end1>=0){
+            nums1[fill] = nums1[end1];
+            end1--;
+            fill--;
+        }
+        while(end2>=0){
+            nums1[fill] = nums2[end2];
+            end2
+            --;
+            fill--;
+        }
+    }
+}
+
+// My Approach
+O(m) + O(m+n)
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int end1 = m-1;
+        int i = 0;
+        while(end1>=0){
+            nums1[nums1.length-i-1] = nums1[end1];
+            end1--;
+            i++;
+        }
+        int start1 = nums1.length-i;
+        int start2 = 0;
+        int index = 0;
+        while(start1<nums1.length && start2<n){
+            if(nums1[start1]<=nums2[start2]){
+                nums1[index] = nums1[start1];
+                start1++;
+            }else{
+                nums1[index] = nums2[start2];
+                start2++;
+            }
+            index++;
+        }
+        while(start1<nums1.length){
+            nums1[index] = nums1[start1];
+            start1++;
+            index++;
+        }
+        while(start2<n){
+            nums1[index] = nums2[start2];
+            start2++;
+            index++;
+        }
+    }
+}
+
+// Striver
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int i=m-1;
+        int j=0;
+        while(i>=0 && j<n){
+            if(nums1[i] > nums2[j]){
+                int temp = nums1[i];
+                nums1[i] = nums2[j];
+                nums2[j] = temp;
+            }else{
+                break;
+            }
+            i--;
+            j++;
+        }
+        Arrays.sort(nums1, 0, m);
+        Arrays.sort(nums2);
+        int index = m;
+        for(int ele:nums2){
+            nums1[index++] = ele;
+        }
+    }
+}
+
+// Striver Gap Method
+public class tUf {
+
+    public static void swapIfGreater(long[] arr1, long[] arr2, int ind1, int ind2) {
+        if (arr1[ind1] > arr2[ind2]) {
+            long temp = arr1[ind1];
+            arr1[ind1] = arr2[ind2];
+            arr2[ind2] = temp;
+        }
+    }
+
+    public static void merge(long[] arr1, long[] arr2, int n, int m) {
+
+        // len of the imaginary single array:
+        int len = n + m;
+
+        // Initial gap:
+        int gap = (len / 2) + (len % 2);
+
+        while (gap > 0) {
+            // Place 2 pointers:
+            int left = 0;
+            int right = left + gap;
+            while (right < len) {
+                // case 1: left in arr1[]
+                //and right in arr2[]:
+                if (left < n && right >= n) {
+                    swapIfGreater(arr1, arr2, left, right - n);
+                }
+                // case 2: both pointers in arr2[]:
+                else if (left >= n) {
+                    swapIfGreater(arr2, arr2, left - n, right - n);
+                }
+                // case 3: both pointers in arr1[]:
+                else {
+                    swapIfGreater(arr1, arr1, left, right);
+                }
+                left++; right++;
+            }
+            // break if iteration gap=1 is completed:
+            if (gap == 1) break;
+
+            // Otherwise, calculate new gap:
+            gap = (gap / 2) + (gap % 2);
+        }
+    }

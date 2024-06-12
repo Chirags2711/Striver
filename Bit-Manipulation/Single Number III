@@ -1,0 +1,24 @@
+class Solution {
+    public int[] singleNumber(int[] nums) {
+        int xor = 0;
+        for(int n: nums){
+            xor ^= n;
+        }
+        int pos = 0;
+        while(true){
+            if(((1<<pos) & xor) != 0){
+                break;
+            }
+            pos++;
+        }
+        int[] res = new int[2];
+        for(int n: nums){
+            if((1<<pos & n) != 0){
+                res[1] = res[1] ^ n;
+            }else{
+                res[0] = res[0] ^ n;
+            }
+        }
+        return res;
+    }
+}

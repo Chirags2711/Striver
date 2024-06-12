@@ -1,0 +1,12 @@
+// Even if selling on same day is not allowed, it is asked to return 0 if unable to earn any profit, so does not matter.
+class Solution {
+    public int maxProfit(int[] prices) {
+        int prevMin = prices[0];
+        int ans = 0;
+        for(int i=0; i<prices.length; i++){
+            prevMin = Math.min(prices[i], prevMin);
+            ans = Math.max(ans, prices[i] - prevMin);
+        }
+        return ans;
+    }
+}

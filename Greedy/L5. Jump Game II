@@ -1,0 +1,60 @@
+// DP
+class Solution {
+    public int jump(int[] nums) {
+        int n = nums.length;
+        int dp[] = new int[n];
+        Arrays.fill(dp, -1);
+        return fun(0, n, nums, dp);
+    }
+    public int fun(int i, int n, int nums[], int []dp){
+        if(i==n-1){
+            return 0;
+        }
+        if(i>=n){
+            return Integer.MAX_VALUE-1;
+        }
+        if(dp[i]!=-1){
+            return dp[i];
+        }
+        int min = Integer.MAX_VALUE-1;
+        for(int jumps = 1; jumps <= nums[i]; jumps++){
+            min = Math.min(min, fun(i+jumps, n, nums, dp));
+        }
+        return dp[i] = min+1;
+    }
+}
+// Tabulate
+class Solution {
+    public int jump(int[] nums) {
+        int n = nums.length;
+        int dp[] = new int[n];
+        dp[n-1] = 0;
+        for(int i = n-2; i>=0; i--){
+            int min = Integer.MAX_VALUE-1;
+            for(int jumps = 1; jumps <= nums[i]; jumps++){
+                min = Math.min(min, (i+jumps)<n ? dp[i+jumps] : Integer.MAX_VALUE-1);
+            }
+            dp[i] = min+1;
+        }
+        return dp[0];
+    }
+}
+
+// Greedy Neetcode
+class Solution {
+    public int jump(int[] nums) {
+        int n = nums.length;
+        int l = 0, r = 0; //level
+        int res = 0;
+        while(r<nums.length-1){
+            int farthest = 0;
+            for(int i=l; i<=r; i++){
+                farthest = Math.max(farthest, i+nums[i]);
+            }
+            l = r + 1;
+            r = farthest;
+            res++;
+        }
+        return res;
+    }
+}

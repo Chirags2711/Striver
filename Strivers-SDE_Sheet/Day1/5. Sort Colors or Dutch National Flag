@@ -1,0 +1,28 @@
+// Dutch National Flag
+// Region of 0s: 0 to lo-1
+// Region of 1s: lo to mid-1
+// Region of 2s: hi+1 to n-1
+// Unsorted Region: mid to hi
+class Solution {
+    public void sortColors(int[] nums) {
+        int lo = 0, mid = 0, hi = nums.length-1;
+        while(mid <= hi){
+            int ele = nums[mid];
+            if(ele == 0){
+                swap(nums, lo, mid);
+                lo++;
+                mid++;
+            }else if(ele == 1){
+                mid++;
+            }else{
+                swap(nums, mid, hi);
+                hi--;
+            }
+        }
+    }
+    public void swap(int[] nums, int i, int j){
+        int t = nums[i];
+        nums[i]=nums[j];
+        nums[j]=t;
+    }
+}

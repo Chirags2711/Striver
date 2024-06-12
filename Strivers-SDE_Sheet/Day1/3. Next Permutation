@@ -1,0 +1,47 @@
+class Solution {
+    public void nextPermutation(int[] nums) {
+        int n = nums.length;
+        int orderChanged = n-2;
+        while(orderChanged >= 0 && nums[orderChanged] >= nums[orderChanged+1]){
+            orderChanged--;
+        }
+        if(orderChanged < 0){
+            Arrays.sort(nums);
+            return;
+        }
+        
+        int larger = findFirstLargerFromBack(nums, orderChanged);
+
+        // swap orderChanged and larger
+        swap(nums, orderChanged, larger);
+        // sort in after orderChanged (by swapping here)
+        int start = orderChanged + 1;
+        int end = n-1;
+        while(start < end){
+            swap(nums, start, end);
+            start++;
+            end--;
+        }
+
+        return;
+    }
+    public int findFirstLargerFromBack(int[] nums, int orderChanged){
+        int x = nums[orderChanged];
+        int lo = orderChanged+1;
+        int hi = nums.length-1;
+        while(lo<=hi){
+            int mid = lo + (hi - lo) / 2;
+            if(nums[mid] > x){
+                lo = mid + 1;
+            }else{
+                hi = mid - 1;
+            }
+        }
+        return hi;
+    }
+    public void swap(int[] nums, int i, int j){
+        int t = nums[i];
+        nums[i] = nums[j];
+        nums[j] = t;
+    }
+}

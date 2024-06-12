@@ -1,0 +1,19 @@
+class Solution {
+    public static int findXOR(int l, int r) {
+        int oneToLMinus1 = getXorFrom1ToN(l-1);
+        int oneToR = getXorFrom1ToN(r);
+        return oneToLMinus1 ^ oneToR;
+    }
+    public static int getXorFrom1ToN(int N){
+        switch(N%4){
+            case 1:
+                return 1;
+            case 2:
+                return N+1;
+            case 3:
+                return 0;
+            default:
+                return N;
+        }
+    }
+}
