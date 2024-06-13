@@ -1,0 +1,19 @@
+// fractional ks
+
+class Solution {
+    public int maximumUnits(int[][] boxTypes, int truckSize) {
+        int ans = 0, n = boxTypes.length;
+        Arrays.sort(boxTypes, new Comparator<int[]>(){
+            public int compare(int[] i, int[] j){
+                return -Integer.compare(i[1], j[1]);
+            }
+        });
+        int index = 0;
+        while(truckSize >= 0 && index < n){
+            int[] curr = boxTypes[index++];
+            ans += (curr[1] * Math.min(truckSize, curr[0]));
+            truckSize -= curr[0];
+        }
+        return ans;
+    }
+}
