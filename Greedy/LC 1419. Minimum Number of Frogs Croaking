@@ -1,0 +1,77 @@
+// The code is similar to that of "Minimum Platforms" problem, which is a standard Greedy Problem, we have included a isValid() function to ensure that the String given to us is valid.
+class Solution{
+    public int minNumberOfFrogs(String croakOfFrogs){
+        if(!isValid(croakOfFrogs)){
+            return -1;
+        }
+        int frogs = 0, maxFrogs = 0;
+        int n = croakOfFrogs.length();
+        for(int i = 0; i < n; i++){
+            char ch = croakOfFrogs.charAt(i);
+            if(ch == 'c') {
+                frogs++;
+                maxFrogs = Math.max(maxFrogs, frogs);
+            } else if(ch == 'k') {
+                frogs--;
+            }
+        }
+        return maxFrogs;
+    }
+
+    /*For the string to be valid the word, there are certain conditions that are to be met, which are as follows :
+        a) The input string should not have any other characters other than 'c', 'r', 'o', 'a' and 'k', but we need not make a check for this as it is clearly 
+        given in the constraints that the input string only contains  'c', 'r', 'o', 'a' and 'k'
+        
+        b) A croak can occur simultaneously when a previous croak is ongoing, that is at a particular instant of time at position i, we would have seen c, r and o,
+        and from  i + 1 another croak can simultaneously start from 'c', this tells us that the value of character count
+        i.e in this case 'c' must always be more than the value of the characters before c which in this case is nil.
+        
+        If we then seen the 'r' of the second simultaneous croak, the value of count of character r must be greater than or equal to 
+        count of all previous characters in this case 'c', and c is the only character that comes 
+        before r in croak.
+        
+        c) Once we perform these steps, we need to ensure that the frequency of all the characters are same, to ensure we do not have any unfinished croaks
+
+        eg : croakcr -> Invalid
+        c -> 2
+        r -> 2
+        o -> 1
+        a -> 1
+        k -> 1
+    */
+    private boolean isValid(String croakOfFrogs){
+        int[] check = new int[5];
+        /*index 0 -> c
+        index 1 -> r
+        index 2 -> o
+        index 3 -> a
+        index 4 -> k
+        */
+        HashMap<Character, Integer> hm = new HashMap<>();
+        hm.put('c', 0);
+        hm.put('r', 1);
+        hm.put('o', 2);
+        hm.put('a', 3);
+        hm.put('k', 4);
+        
+        for(int i = 0; i < croakOfFrogs.length(); i++){
+            char c = croakOfFrogs.charAt(i);
+            int index = hm.get(c);
+            
+            check[index] += 1;
+            
+            int ref = check[index];
+            for(int j = 0; j < index; j++){
+                if(check[j] < ref){
+                    return false;
+                }
+            }
+        }
+        for(int i = 1; i < 5; i++){
+            if(check[i - 1] != check[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+}
