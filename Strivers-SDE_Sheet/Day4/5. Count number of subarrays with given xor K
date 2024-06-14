@@ -1,0 +1,16 @@
+public class Solution {
+    public int solve(ArrayList<Integer> a, int b) {
+        int n = a.size(), count=0;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int xor = 0;
+        for(int i=0;i<n;i++){
+            xor ^= a.get(i);
+            if(xor==b){
+                count++;
+            }
+            if(map.containsKey(b^xor)) count+=map.get(b^xor);
+            map.put(xor, map.getOrDefault(xor, 0)+1);
+        }
+        return count;
+    }
+}
