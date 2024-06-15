@@ -1,0 +1,24 @@
+class Solution {
+    public ListNode addTwoNumbers(ListNode head1, ListNode head2) {
+        ListNode dummy = new ListNode(0);
+        ListNode curr = dummy;
+
+        int carry = 0;
+        while(head1!=null || head2!=null || carry!=0){
+            int val1 = head1 == null? 0: head1.val;
+            int val2 = head2 == null? 0: head2.val;
+
+            int val3 = val1 + val2 + carry;
+            carry = val3 / 10;
+            val3 = val3 % 10;
+            
+            ListNode newNode = new ListNode(val3);
+            curr.next = newNode;
+
+            curr = newNode;
+            head1 = head1 == null? null: head1.next;
+            head2 = head2 == null? null: head2.next;
+        }
+        return dummy.next;
+    }
+}
