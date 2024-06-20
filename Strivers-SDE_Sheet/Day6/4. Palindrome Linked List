@@ -1,0 +1,31 @@
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        if(head==null || head.next == null) return true;
+        ListNode slow = head, fast = head;
+        while(fast.next!=null && fast.next.next!=null){
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        ListNode reversedHead = reverseLinkedList(slow.next);
+        while(reversedHead!=null){
+            if(head.val != reversedHead.val) return false;
+            head = head.next;
+            reversedHead = reversedHead.next;
+        }
+        return true;
+    }
+    public ListNode reverseLinkedList(ListNode head)
+    {
+        if(head == null || head.next == null) return head;
+        ListNode prev = null;
+        ListNode curr = head;
+        while(curr.next!=null){
+            ListNode nex = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nex;
+        }
+        curr.next = prev;
+        return curr;
+    }
+}
