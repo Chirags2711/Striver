@@ -1,0 +1,45 @@
+// Approach 1
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        int l1 = length(headA);
+        int l2 = length(headB);
+        while(l1>l2){ // either l1>l2, move headA to same position
+            headA = headA.next;
+            l1--;
+        }
+        while(l2>l1){ // or l2>l1
+            headB = headB.next;
+            l2--;
+        }
+        while(headA!=null){ // both will go null when headA = null as same pos
+            if(headA == headB){
+                return headA;
+            }
+            headA = headA.next;
+            headB = headB.next;
+        }
+        return null;
+    }
+    public int length(ListNode head){
+        int l = 0;
+        while(head!=null){
+            head = head.next;
+            l++;
+        }
+        return l;
+    }
+}
+
+// Approach 2
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        // temp1 and temp2, both will cover the same distance. If not intersecting, it will be l1 + l2, else it will be l1+l2-distance after intersection
+        ListNode temp1 = headA;
+        ListNode temp2 = headB;
+        while(temp1 != temp2){ //if they don't intersect, they will both be null after exact same distance
+            temp1 = temp1 == null? headB: temp1.next;
+            temp2 = temp2 == null? headA: temp2.next;
+        }
+        return temp1;
+    }
+}
