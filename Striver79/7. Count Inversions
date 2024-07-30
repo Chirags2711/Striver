@@ -1,0 +1,44 @@
+class Solution {
+    static long inversionCount(long arr[], int n) {
+        return mergeSort(arr, n, 0, n-1);
+    }
+    static long mergeSort(long[] nums, int n, int start, int end){
+        if(start >= end){
+            return 0;
+        }
+        int mid = start + (end-start) / 2;
+        long ans = 0;
+        ans += mergeSort(nums, n, start, mid);
+        ans += mergeSort(nums, n, mid + 1, end);
+        ans += merge(nums, start, mid, end);
+        return ans;
+    }
+    static long merge(long[] nums, int start, int mid, int end){
+        int i = start;
+        int j = mid + 1;
+        ArrayList<Long> sortedList = new ArrayList<>();
+        long count = 0;
+        while(i<=mid && j<=end){
+            if(nums[i] <= nums[j]){
+                sortedList.add(nums[i]);
+                i++;
+            }else{
+                long noOfGreaterElementsOnLeft = mid - i + 1;
+                // for j
+                count += noOfGreaterElementsOnLeft * 1;
+                sortedList.add(nums[j]);
+                j++;
+            }
+        }
+        while(i<=mid){
+            sortedList.add(nums[i++]);
+        }
+        while(j<=end){
+            sortedList.add(nums[j++]);
+        }
+        for(int k=start; k<=end; k++){
+            nums[k] = sortedList.get(k-start);
+        }
+        return count;
+    }
+}
