@@ -1,0 +1,95 @@
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Trie valid = new Trie(); // or use HashMap
+        for(String s: wordList){
+            valid.add(s);
+        }
+        if(!valid.contains(endWord)){
+            return 0;
+        }
+
+        Queue<String> q = new LinkedList<>();
+        q.offer(beginWord);
+        valid.remove(beginWord);
+
+        int length = 1;
+        while(!q.isEmpty()){
+            int t = q.size();
+            while(t-- > 0){
+                String s = q.poll();
+                if(s.equals(endWord)){
+                    return length;
+                }
+                for(int i=0; i<s.length(); i++){
+                    for(char ch = 'a'; ch <= 'z'; ch++){
+                        String newS = s.substring(0, i) + ch + s.substring(i+1);
+                        if(valid.contains(newS)){
+                            q.offer(newS);
+                            valid.remove(newS);
+                        }
+                    }
+                }
+            }
+            length++;
+        }
+
+        return 0;
+    }
+}
+
+
+// Use HashMap or Trie
+class Trie{
+    class TrieNode{
+        TrieNode[] children;
+        boolean wordEnd;
+        public TrieNode(){
+            children = new TrieNode[26];
+            wordEnd = false;
+        }
+    }
+
+    TrieNode root;
+    public Trie(){
+        root = new TrieNode();
+    }
+
+    public void add(String s){
+        TrieNode node = root;
+        for(int i=0; i<s.length(); i++){
+            char ch = s.charAt(i);
+            int idx = ch-'a';
+            if(node.children[idx] == null){
+                node.children[idx] = new TrieNode();
+            }
+            node = node.children[idx];
+        }
+        node.wordEnd = true;
+    }
+
+    public void remove(String s){
+        TrieNode node = root;
+        for(int i=0; i<s.length(); i++){
+            char ch = s.charAt(i);
+            int idx = ch-'a';
+            if(node.children[idx] == null){
+                return;
+            }
+            node = node.children[idx];
+        }
+        node.wordEnd = false;
+    }
+
+    public boolean contains(String s){
+        TrieNode node = root;
+        for(int i=0; i<s.length(); i++){
+            char ch = s.charAt(i);
+            int idx = ch-'a';
+            if(node.children[idx] == null){
+                return false;
+            }
+            node = node.children[idx];
+        }
+        return node.wordEnd;
+    }
+}
